@@ -5,44 +5,63 @@
         金币
         <span class="nav-active-border" v-show="navName === 'gold'"></span>
       </p>
-      <p @click="switchNav('money')" :class="{active: navName === 'money'}">
+      <p @click="switchNav('income')" :class="{active: navName === 'income'}">
         现金
-        <span class="nav-active-border" v-show="navName === 'money'"></span>
+        <span class="nav-active-border" v-show="navName === 'income'"></span>
       </p>
     </div>
     <ul class="reward-list" v-show="navName === 'gold'">
-      <li class="reward-item">
+      <li class="reward-item" v-for="(item, index) in goldListFormat" :key="index">
         <div>
-          <p class="reward-name">阅读奖励</p>
-          <p class="reward-time">2017-07-12 11:33:21</p>
+          <p class="reward-name">{{item.desc}}</p>
+          <p class="reward-time">{{item.createTime}}</p>
         </div>
-        <p class="reward-num">+10金币</p>
+        <p class="reward-num" v-text="item.amountStr"></p>
       </li>
     </ul>
-    <ul class="reward-list" v-show="navName === 'money'">
-      <li class="reward-item">
+    <ul class="reward-list" v-show="navName === 'income'">
+      <li class="reward-item" v-for="(item, index) in incomeListFormat" :key="index">
         <div>
-          <p class="reward-name">阅读奖励</p>
-          <p class="reward-time">2017-07-12 11:33:21</p>
+          <p class="reward-name">{{item.desc}}</p>
+          <p class="reward-time">{{item.createTime}}</p>
         </div>
-        <p class="reward-num">+10元</p>
+        <p class="reward-num" v-text="item.amountStr"></p>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import utils from '@/utils/index';
 export default {
   name: 'RewardTab',
   data() {
-    return {
-      // 区分是阅读奖励tab 还是现金奖励tab
-      navName: 'gold'
-    };
+    return {};
+  },
+  props: {
+    navName: String,
+    goldList: Array,
+    incomeList: Array
+  },
+  computed: {
+    goldListFormat() {
+      return this.goldList.map(value => {
+        value.createTime = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
+        value.amountStr = `+${value.amount}金币`;
+        return value;
+      });
+    },
+    incomeListFormat() {
+      return this.incomeList.map(value => {
+        value.createTime = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
+        value.amountStr = `+${value.amount / 100}元`;
+        return value;
+      });
+    }
   },
   methods: {
     switchNav(navName) {
-      this.navName = navName;
+      this.$emit('handleSwitchName', navName);
     }
   }
 };
@@ -61,6 +80,8 @@ export default {
     font-size 16px
     color #8E8E8E
     position relative
+    &.active
+      color: #FF3300;
     .nav-active-border
       position absolute
       background #FF3300

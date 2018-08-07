@@ -1,14 +1,16 @@
 <template>
   <div class="user-info">
-    <img src="/static/images/avator.png" class="user-info-avator">
+    <img :src="userInfo.avatarUrl" class="user-info-avator" v-if="userInfo.avatarUrl && userInfo.avatarUrl !== ''">
+    <img src="/static/images/avator.png" class="user-info-avator" v-else>
     <div class="user-info-detail">
-      <p class="user-name font-weight">请登录</p>
+      <p class="user-name font-weight" v-if="userInfo.nickName && userInfo.nickName !== ''" v-text="userInfo.nickName"></p>
+      <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo" class="user-name font-weight" v-else>请登录</button>
       <p class="user-reward">
         <span class="gold-detail">金币
-          <span class="font-weight">45</span>
+          <span class="font-weight">{{gold}}</span>
         </span>
         <span>零钱
-          <span class="font-weight">4.12</span>
+          <span class="font-weight">{{balance}}</span>
         </span>
       </p>
     </div>
@@ -19,11 +21,33 @@
 <script>
 export default {
   name: 'Sign',
+  computed: {
+    userInfo() {
+      return this.$store.getters.userInfo;
+    },
+    gold() {
+      return this.$store.getters.gold;
+    },
+    balance() {
+      return this.$store.getters.balance / 100;
+    }
+  },
+  mounted() {},
   methods: {
     // 打开用户奖励列表
     openRewardPage() {
-      var url = '/pages/reward/main?uid=' + 1;
+      let url = '/pages/reward/main?uid=' + 1;
       wx.navigateTo({ url });
+    },
+    // 获取用户信息
+    onGotUserInfo(e) {
+      console.log(e);
+      if (e.target.userInfo) {
+        console.log('授权成功');
+        this.$store.dispatch('UpdateUserInfo', e.target.userInfo);
+      } else {
+        console.log('授权失败');
+      }
     }
   }
 };
@@ -51,6 +75,8 @@ export default {
       color #323232
       line-height 20px
       margin-bottom 9px
+      padding 0
+      text-align left
     .user-reward
       font-size 13px
       color #8E8E8E

@@ -1,6 +1,8 @@
 <template>
   <div class="download-box">
-    <img src="/static/images/download.png" class="download-btn">
+    <button open-type="contact" class="download-btn">
+      <img src="/static/images/download.png">
+    </button>
   </div>
 </template>
 
@@ -18,4 +20,8 @@ export default {
     width 343px
     height 97px
     margin 0 auto
+    padding 0;
+    img
+      width 100%
+      height 100%
 </style>

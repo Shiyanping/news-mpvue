@@ -3,11 +3,11 @@
     <div class="reward-box">
       <div>
         <p class="reward-title">金币余额</p>
-        <p class="reward-num">990000 <img src="/static/images/gold-icon.png" alt=""></p>
+        <p class="reward-num">{{gold}} <img src="/static/images/gold-icon.png" alt=""></p>
       </div>
       <div>
         <p class="reward-title">现金余额</p>
-        <p class="reward-num">530.66
+        <p class="reward-num">{{balance}}
           <span>元</span>
         </p>
       </div>
@@ -18,7 +18,15 @@
 
 <script>
 export default {
-  name: 'RewardSum'
+  name: 'RewardSum',
+  computed: {
+    gold() {
+      return this.$store.getters.gold;
+    },
+    balance() {
+      return this.$store.getters.balance / 100;
+    }
+  }
 };
 </script>
 

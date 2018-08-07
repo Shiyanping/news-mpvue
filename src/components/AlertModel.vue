@@ -5,7 +5,8 @@
       <p class="popup-title" v-text="modelParams.title"></p>
       <p class="popup-content" v-text="modelParams.content" v-if="modelParams.contentType==='string'"></p>
       <wxParse className="popup-content" :content="modelParams.content" v-else/>
-      <p class="popup-btn" v-text="modelParams.btn" @click="handleConfirm"></p>
+      <button class="popup-btn" @tap="handleConfirm" v-if="modelParams.btnType == ''">{{modelParams.btn}}</button>
+      <button class="popup-btn" @tap="handleConfirm" v-else :open-type="modelParams.btnType">{{modelParams.btn}}</button>
     </div>
   </div>
 </template>
@@ -73,6 +74,9 @@ export default {
       text-align center
       line-height 24px
       margin 8px 0 24px
+      .font-orange
+        color #FF743A
+        display inline-block
     .popup-btn
       width 236px
       height 48px

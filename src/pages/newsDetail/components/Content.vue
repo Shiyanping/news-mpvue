@@ -1,9 +1,9 @@
 <template>
   <div class="article-content">
-    <p class="article-title">{{articleContent.title}}</p>
-    <p class="article-uperName">{{articleContent.uperName}}</p>
-    <p class="article-updateTime">{{uperUpdateTimeFormat}}</p>
-    <wxParse :content="articleContent.content" @preview="preview" />
+    <p class="article-title" v-if="articleContent.title">{{articleContent.title}}</p>
+    <p class="article-uperName" v-if="articleContent.uperName">{{articleContent.uperName}}</p>
+    <p class="article-updateTime" v-if="articleContent.uperUpdateTime">{{uperUpdateTimeFormat}}</p>
+    <wxParse :content="articleContent.content" @preview="preview" v-if="articleContent.content" :imageProp="imageProp" />
   </div>
 </template>
 
@@ -13,7 +13,17 @@ import wxParse from 'mpvue-wxparse';
 export default {
   name: 'NewsDetail',
   props: {
-    articleContent: Object
+    articleContent: {
+      type: Object,
+      default: {}
+    }
+  },
+  data() {
+    return {
+      imageProp: {
+        lazyLoad: true
+      }
+    };
   },
   components: {
     wxParse
@@ -22,9 +32,6 @@ export default {
     uperUpdateTimeFormat() {
       return utils.dateFormat(new Date(this.articleContent.uperUpdateTime), 'yyyy-MM-dd hh:mm');
     }
-  },
-  created() {
-    console.log(this.articleContent);
   },
   methods: {
     preview(src, e) {

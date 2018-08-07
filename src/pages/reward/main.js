@@ -6,6 +6,7 @@ app.$mount();
 
 export default {
   config: {
-    navigationBarTitleText: '收入明细'
+    navigationBarTitleText: '收入明细',
+    onReachBottomDistance: 50
   }
 };

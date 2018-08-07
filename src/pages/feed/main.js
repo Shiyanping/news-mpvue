@@ -6,8 +6,9 @@ app.$mount();
 
 export default {
   config: {
-    navigationBarTitleText: '新闻',
+    navigationBarTitleText: '淘新闻',
     enablePullDownRefresh: true,
-    onReachBottomDistance: 50
+    onReachBottomDistance: 50,
+    backgroundTextStyle: 'dark'
   }
 };

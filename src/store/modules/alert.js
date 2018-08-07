@@ -1,40 +1,46 @@
 const alert = {
   state: {
     params: {
+      // 弹框title
       title: '',
+      // 弹框内容，如果是要渲染 html 需要将 contentType 改为 html，字符串 contentType 为 string
       content: '',
+      // 弹框内容的形式
       contentType: 'string',
+      // 弹窗按钮的文案
       btn: '',
-      showModel: false
+      // 弹窗按钮的类型 contact：客服，默认为空
+      btnType: '',
+      // 是否展示弹窗
+      showModel: false,
+      // 弹窗按钮的回调函数
+      cb: null
+    },
+    resetParams: {
+      // 弹框title
+      title: '',
+      // 弹框内容，如果是要渲染 html 需要将 contentType 改为 html，字符串 contentType 为 string
+      content: '',
+      // 弹框内容的形式
+      contentType: 'string',
+      // 弹窗按钮的文案
+      btn: '',
+      // 弹窗按钮的类型 contact：客服，默认为空
+      btnType: '',
+      // 是否展示弹窗
+      showModel: false,
+      // 弹窗按钮的回调函数
+      cb: null
     }
   },
 
   mutations: {
-    SET_ALERT: (state, obj) => {
-      Object.assign(state.params, obj);
+    OPEN_ALERT: (state, obj) => {
+      Object.assign(state.params, state.resetParams, obj);
     },
-    CLOSE_ALERT: (state) => {
+    CLOSE_ALERT: state => {
       state.params.showModel = false;
     }
-  },
-
-  actions: {
-    // 用户名登录
-    // LoginByUsername({ commit }, userInfo) {
-    //   const username = userInfo.username.trim();
-    //   return new Promise((resolve, reject) => {
-    //     loginByUsername(username, userInfo.password)
-    //       .then(response => {
-    //         const data = response.data;
-    //         commit('SET_TOKEN', data.token);
-    //         setToken(response.data.token);
-    //         resolve();
-    //       })
-    //       .catch(error => {
-    //         reject(error);
-    //       });
-    //   });
-    // }
   }
 };
 

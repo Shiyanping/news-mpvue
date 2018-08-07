@@ -1,10 +1,12 @@
-# newsearn-mp
+# 淘新闻小程序
 
-> 淘新闻小程序
+## 项目介绍
 
-## Build Setup
+使用 [mpvue](http://mpvue.com/) 搭建的小程序
 
-``` bash
+## 启动步骤
+
+```bash
 # install dependencies
 npm install
 
@@ -19,3 +21,5 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## 项目目录

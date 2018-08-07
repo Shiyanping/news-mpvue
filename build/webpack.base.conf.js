@@ -42,7 +42,8 @@ module.exports = {
     alias: {
       'vue': 'mpvue',
       '@': resolve('src'),
-      'styles': resolve('src/styles')
+      'styles': resolve('src/styles'),
+      '@static': resolve('static')
     },
     symlinks: false,
     aliasFields: ['mpvue', 'weapp', 'browser'],
