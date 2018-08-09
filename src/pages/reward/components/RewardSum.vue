@@ -31,6 +31,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/mixin.styl'
 .reward-sum
   padding 16px 16px 12px
   box-sizing border-box
@@ -48,16 +49,12 @@ export default {
     box-sizing border-box
     > div
       flex 1
-      display flex
-      align-items center
-      justify-content center
+      hor-ver-center-flex()
       flex-direction column
       &:first-child
         border-right 1px solid #E8E8E8
       .reward-title, .reward-num
-        display flex
-        align-items center
-        justify-content center
+        hor-ver-center-flex()
         width 100%
       .reward-title
         font-size 14px
@@ -73,6 +70,8 @@ export default {
           margin-left 4px
         > span
           font-size 16px
+          position relative
+          top 1px
   .reward-tips
     text-align center
     font-size 12px

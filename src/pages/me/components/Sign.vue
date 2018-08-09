@@ -13,8 +13,7 @@
       <li class="sign-item" v-for="item in rewardList" :key="item.day">
         <div v-if="(signCycleDays == item.day && isSign) || (signCycleDays > item.day)" class="success">已领</div>
         <div v-else>+{{item.reward}}</div>
-        <p v-if="(signCycleDays == item.day && isSign) || (signCycleDays > item.day)">已领取</p>
-        <p v-else>第{{item.day}}天</p>
+        <p>第{{item.day}}天</p>
       </li>
     </ul>
     <div class="sign-success-model" v-if="showSignModel">
@@ -129,7 +128,7 @@ export default {
       // 通过vuex弹出弹出框
       const alertModelParams = {
         title: '签到规则',
-        content: `<p style="text-align:left">第一天签到<span class="font-orange">18</span>金币、第二天签到为<span class="font-orange">28</span>金币、以此类推，第七天为<span class="font-orange">368</span>金币。</p>
+        content: `<p style="text-align:left">1、第一天签到<span class="font-orange">18</span>金币、第二天签到为<span class="font-orange">28</span>金币、以此类推，第七天为<span class="font-orange">368</span>金币。</p>
         <br>
         <p style="text-align:left">2、签到7天为一个周期，后续将重新从第一天算起。</p>
         <br>
@@ -150,6 +149,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/mixin.styl'
 .sign-box
   padding 24px 12px
   height auto
@@ -178,7 +178,7 @@ export default {
     width 190px
     height 44px
     line-height 44px
-    background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
+    btn-linear-gradient()
     box-shadow 0 2px 4px 0 rgba(255, 86, 69, 0.5)
     border-radius 100px
     font-family PingFangSC-Semibold

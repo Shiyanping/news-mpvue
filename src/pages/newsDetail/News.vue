@@ -14,6 +14,7 @@
 <script>
 import newsDetail from './components/Content';
 import { getNewsDetail } from '@/api/news';
+const app = getApp();
 export default {
   name: 'News',
   components: {
@@ -30,9 +31,13 @@ export default {
     this.pageQuery = this.$root.$mp.query;
     getNewsDetail(this.pageQuery.id).then(res => {
       const data = res.data;
-      this.articleContent = {};
       if (data.code === 0) {
         this.articleContent = data.result;
+        this.remoteLog({
+          event: 'WebPageView',
+          page: '资讯明细页',
+          name: '内容小程序'
+        });
       } else {
         console.log('网络异常');
       }
@@ -42,11 +47,21 @@ export default {
       withShareTicket: true
     });
   },
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
   methods: {
     // 返回首页
     goHome() {
       let url = '/pages/feed/main';
       wx.switchTab({ url });
+    },
+    // 埋点
+    remoteLog(params) {
+      app.sensors.track(params.event, {
+        element_page: params.page,
+        element_name: params.name
+      });
     }
   },
   // 使用右上角的转发
@@ -65,6 +80,7 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '~styles/mixin.styl'
 .fixed-footer
   position fixed
   bottom 0
@@ -73,24 +89,19 @@ export default {
   display flex
   justify-content space-between
   height 48px
+  box-shadow 0px -1px 3px rgba(0,0,0,.15)
   > p
-    display flex
-    justify-content center
-    align-items center
+    hor-ver-center-flex()
     height 100%
   .go-home
     width 128px
     text-align center
     background #fff
     color #323232
-    box-shadow inset 0 0 0 0 #E5E5E5
   .share-wechat
-    display flex
-    align-items center
-    justify-content center
+    hor-ver-center-flex()
     width 247px
-    background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
-    box-shadow 0 2px 4px 0 rgba(255, 86, 69, 0.5)
+    btn-linear-gradient()
     color #fff
     border-radius 0px
     img

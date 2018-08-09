@@ -5,7 +5,7 @@
     <div class="user-info-detail">
       <p class="user-name font-weight" v-if="userInfo.nickName && userInfo.nickName !== ''" v-text="userInfo.nickName"></p>
       <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo" class="user-name font-weight" v-else>请登录</button>
-      <p class="user-reward">
+      <p class="user-reward" @click="openRewardPage">
         <span class="gold-detail">金币
           <span class="font-weight">{{gold}}</span>
         </span>
@@ -54,6 +54,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '~styles/mixin.styl'
 .font-weight
   font-family PingFangSC-Semibold
 .user-info
@@ -92,7 +93,7 @@ export default {
     width 60px
     height 28px
     line-height 28px
-    background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
+    btn-linear-gradient()
     border-radius 14px 0 0 14px
     font-family PingFangSC-Medium
     font-size 14px

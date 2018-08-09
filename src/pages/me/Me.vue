@@ -50,7 +50,7 @@ export default {
   // 定义转发的内容
   onShareAppMessage(res) {
     return {
-      title: '淘新闻',
+      title: '送你一个红包，快拆！',
       path: '/pages/feed/main',
       imageUrl: '/static/images/share-me.png'
     };
@@ -96,7 +96,7 @@ page
     .sign-share-btn
       width 236px
       height 48px
-      background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
+      btn-linear-gradient()
       box-shadow 0 2px 4px 0 rgba(255, 86, 69, 0.5)
       border-radius 100px
       color #FFFFFF

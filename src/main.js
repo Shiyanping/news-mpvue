@@ -1,6 +1,9 @@
+import { sa } from './utils/sensorsdata';
 import Vue from 'vue';
 import App from './App';
 import store from './store';
+
+sa.init();
 
 Vue.config.productionTip = false;
 App.mpType = 'app';

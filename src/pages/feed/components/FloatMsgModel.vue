@@ -3,7 +3,7 @@
     <div class="model-bg" v-if="!isReceive">
       <div class="model-box get-user-info-model">
         <img src="/static/images/new-red-package.png" class="model-box-bg">
-        <img src="/static/images/red-package-close.png" class="red-package-close" @click="closeRedPackageModel">
+        <img src="/static/images/red-package-close.png" class="red-package-close" @click="closeRedPackageModel('noReceive')">
         <p class="new-red-package-title">恭喜获得一个新手红包</p>
         <p class="new-red-package-content">最高200元随机红包</p>
         <p class="no-get-info-tips" v-if="!agreeGetUserInfo">请先同意授权登录才可领取红包</p>
@@ -13,7 +13,7 @@
     <div class="model-bg" v-else>
       <div class="model-box reward-model">
         <img src="/static/images/open-red-package.png" class="model-box-bg">
-        <img src="/static/images/red-package-close.png" class="red-package-close" @click="closeRedPackageModel">
+        <img src="/static/images/red-package-close.png" class="red-package-close" @click="closeRedPackageModel('receive')">
         <p class="reward-model-title">恭喜获得</p>
         <p class="reward-model-subtitle">新手红包</p>
         <p class="reward-model-num">{{redNum}}
@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     // 关闭新手奖励弹窗
-    closeRedPackageModel() {
-      this.$emit('closeFloatModel');
+    closeRedPackageModel(type) {
+      this.$emit('closeFloatModel', type);
     },
     // 获取用户信息
     onGotUserInfo(e) {
@@ -74,6 +74,7 @@ export default {
         console.log(data);
         if (data.code === 0) {
           this.redNum = data.result / 100;
+          this.$store.commit('ADD_BALANCE', data.result);
           this.isReceive = true;
         } else {
           wx.showToast({

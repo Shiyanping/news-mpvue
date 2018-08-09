@@ -39,6 +39,7 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '~styles/mixin.styl'
 .alert-model
   position fixed
   top 0
@@ -82,7 +83,7 @@ export default {
       height 48px
       text-align center
       line-height 48px
-      background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
+      btn-linear-gradient()
       box-shadow 0 2px 4px 0 rgba(255, 86, 69, 0.5)
       border-radius 100px
       font-family PingFangSC-Medium

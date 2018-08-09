@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border-top">
     <reward-sum></reward-sum>
     <reward-tab :navName="navName" :goldList="goldList" :incomeList="incomeList" @handleSwitchName="handleSwitchName"></reward-tab>
     <div class="margin-bottom"></div>
@@ -133,7 +133,7 @@ export default {
   // 定义转发的内容
   onShareAppMessage(res) {
     return {
-      title: '送你一个红包，快拆',
+      title: '送你一个红包，快拆！',
       path: '/pages/feed/main',
       imageUrl: '/static/images/share-me.png'
     };
@@ -156,7 +156,7 @@ export default {
     hor-ver-center-position()
     height 48px
     width 343px
-    background-image linear-gradient(-90deg, #FE9763 0%, #FF6464 100%)
+    btn-linear-gradient()
     box-shadow 0 2px 4px 0 rgba(255, 86, 69, 0.5)
     border-radius 100px
     text-align center

@@ -3,7 +3,7 @@
     <p class="article-title" v-if="articleContent.title">{{articleContent.title}}</p>
     <p class="article-uperName" v-if="articleContent.uperName">{{articleContent.uperName}}</p>
     <p class="article-updateTime" v-if="articleContent.uperUpdateTime">{{uperUpdateTimeFormat}}</p>
-    <wxParse :content="articleContent.content" @preview="preview" v-if="articleContent.content" :imageProp="imageProp" />
+    <wxParse className="articleDetail" :content="articleContent.content" @preview="preview" v-if="articleContent.content" :imageProp="imageProp" />
   </div>
 </template>
 
@@ -21,7 +21,8 @@ export default {
   data() {
     return {
       imageProp: {
-        lazyLoad: true
+        lazyLoad: true,
+        mode: 'widthFix'
       }
     };
   },
@@ -42,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .article-content
   padding 24px 16px
   box-sizing border-box
@@ -57,8 +58,13 @@ export default {
     font-family PingFangSC-Semibold
     font-size 14px
     color #FF743A
+    margin-bottom 4px
   .article-updateTime
     font-size 14px
     color #8E8E8E
     margin-bottom 12px
+  .articleDetail
+    line-height 1.5
+    image
+      margin 16px 0
 </style>

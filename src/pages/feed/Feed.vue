@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="border-top">
     <!-- feed 流 -->
     <div v-for="item in newsList" :key="item.id" @click="openArticleDetail(item.id)">
-      <div class="three-img-news news-item" v-if="item.thumbMode === 3">
+      <div class="three-img-news news-item border-bottom" v-if="item.thumbMode === 3">
         <p class="news-title">{{item.title}}</p>
         <div class="three-img-list">
           <img v-for="(imgItem, i) in item.thumbArr" :key="i" :src="imgItem.url" class="news-image" @error="errorLoadImg(imgItem)" :class="{'three-center-img': i == 1}">
@@ -12,7 +12,7 @@
           <span>{{item.pubTimeFormat}}</span>
         </p>
       </div>
-      <div class="single-img-news news-item" v-else-if="item.thumbMode === 1">
+      <div class="single-img-news news-item border-bottom" v-else-if="item.thumbMode === 1">
         <div class="single-img-text">
           <p class="news-title">{{item.title}}</p>
           <p class="news-source">
@@ -22,7 +22,7 @@
         </div>
         <img :src="item.thumbArr[0].url" v-if="item.thumbArr[0] != null" class="news-image" @error="errorLoadImg(item.thumbArr[0])">
       </div>
-      <div class="no-img-news news-item" v-else>
+      <div class="no-img-news news-item border-bottom" v-else>
         <p class="news-title">{{item.title}}</p>
         <p class="news-source">
           <span class="source-title">{{item.uperName}}</span>
@@ -43,7 +43,7 @@ import FloatMsgModel from './components/FloatMsgModel';
 import { getWxCode } from '@/utils/wxApi';
 import { getNewsList } from '@/api/news';
 import utils from '@/utils/index';
-import defaultImg from '@static/images/default-article-icon.jpg';
+import defaultImg from '@static/images/default-article-icon.png';
 export default {
   name: 'Feed',
   components: {
@@ -113,13 +113,18 @@ export default {
       let url = '/pages/newsDetail/main?id=' + id;
       wx.navigateTo({ url });
     },
-    // 领取新手奖励
+    // 领取新手奖励 打开弹窗，关闭浮层
     receiveReward() {
       this.showFloatModel = true;
+      this.showFloat = false;
     },
     // 关闭新手奖励弹窗
-    closeFloatModel() {
+    closeFloatModel(type) {
       this.showFloatModel = false;
+      // 未领取红包关闭弹窗，显示浮层
+      if (type === 'noReceive') {
+        this.showFloat = true;
+      }
     },
     // 领取新手奖励成功，跳转签到页面
     goMePage() {
@@ -160,7 +165,8 @@ export default {
     getCreditPage() {
       this.$store.dispatch('GetCreditPage').then(res => {
         if (res.redBagList) {
-          this.showFloat = true;
+          // this.showFloat = true;
+          this.showFloatModel = true;
           this.redPackageInfo = res.redBagList;
         } else {
           this.showFloat = false;
@@ -222,7 +228,6 @@ export default {
   .news-title
     width 222px
 page
-  border-top 0.5px solid #dfdfdf
   .float-msg
     position fixed
     right 11.3px
