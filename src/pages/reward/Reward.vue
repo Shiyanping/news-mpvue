@@ -40,7 +40,7 @@ export default {
   },
   mounted() {
     console.log('奖励页');
-    this.resetData();
+    // this.resetData();
     this.getUserGoldDetail();
     this.getUserIncomeDetail();
     // 注册分享功能
@@ -119,6 +119,10 @@ export default {
       };
       this.$store.commit('OPEN_ALERT', alertModelParams);
     }
+  },
+  onUnload() {
+    console.log('清空');
+    Object.assign(this.$data, this.$options.data());
   },
   // 上拉触底
   onReachBottom() {

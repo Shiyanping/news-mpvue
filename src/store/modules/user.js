@@ -91,11 +91,13 @@ const user = {
       });
     },
     // 获取用户金币余额及红包状态
-    GetCreditPage({ commit }) {
+    GetCreditPage({ commit, state }) {
       return new Promise((resolve, reject) => {
         getCreditPage({}).then(res => {
           const data = res.data;
           if (data.code === 0) {
+            state.gold = 0;
+            state.balance = 0;
             commit('ADD_GOLD', data.result.todayGold);
             commit('ADD_BALANCE', data.result.balance);
             resolve(data.result);

@@ -14,18 +14,18 @@
       <li class="reward-item" v-for="(item, index) in goldListFormat" :key="index">
         <div>
           <p class="reward-name">{{item.desc}}</p>
-          <p class="reward-time">{{item.createTime}}</p>
+          <p class="reward-time">{{item.createTimeStr}}</p>
         </div>
-        <p class="reward-num" v-text="item.amountStr"></p>
+        <p class="reward-num" :class="{'less': item.plus === 0}" v-text="item.amountStr"></p>
       </li>
     </ul>
     <ul class="reward-list" v-show="navName === 'income'">
       <li class="reward-item" v-for="(item, index) in incomeListFormat" :key="index">
         <div>
           <p class="reward-name">{{item.desc}}</p>
-          <p class="reward-time">{{item.createTime}}</p>
+          <p class="reward-time">{{item.createTimeStr}}</p>
         </div>
-        <p class="reward-num" v-text="item.amountStr"></p>
+        <p class="reward-num" :class="{'less': item.plus === 0}" v-text="item.amountStr"></p>
       </li>
     </ul>
   </div>
@@ -46,15 +46,23 @@ export default {
   computed: {
     goldListFormat() {
       return this.goldList.map(value => {
-        value.createTime = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
-        value.amountStr = `+${value.amount}金币`;
+        value.createTimeStr = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
+        if (value.plus === 0) {
+          value.amountStr = `-${value.amount}金币`;
+        } else if (value.plus === 1) {
+          value.amountStr = `+${value.amount}金币`;
+        }
         return value;
       });
     },
     incomeListFormat() {
       return this.incomeList.map(value => {
-        value.createTime = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
-        value.amountStr = `+${value.amount / 100}元`;
+        value.createTimeStr = utils.dateFormat(new Date(value.createTime), 'yyyy-MM-dd hh:mm:ss');
+        if (value.plus === 0) {
+          value.amountStr = `-${value.amount / 100}元`;
+        } else if (value.plus === 1) {
+          value.amountStr = `+${value.amount / 100}元`;
+        }
         return value;
       });
     }
@@ -81,7 +89,7 @@ export default {
     color #8E8E8E
     position relative
     &.active
-      color: #FF3300;
+      color #FF3300
     .nav-active-border
       position absolute
       background #FF3300
@@ -101,6 +109,8 @@ export default {
   font-size 16px
   .reward-num
     color #FF3300
+    &.less
+      color #00d100
   .reward-name
     line-height 22px
   .reward-time

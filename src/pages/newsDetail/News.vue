@@ -100,7 +100,7 @@ export default {
     color #323232
   .share-wechat
     hor-ver-center-flex()
-    width 247px
+    flex: 1
     btn-linear-gradient()
     color #fff
     border-radius 0px

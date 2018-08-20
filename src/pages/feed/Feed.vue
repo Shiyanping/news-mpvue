@@ -5,7 +5,7 @@
       <div class="three-img-news news-item border-bottom" v-if="item.thumbMode === 3">
         <p class="news-title">{{item.title}}</p>
         <div class="three-img-list">
-          <img v-for="(imgItem, i) in item.thumbArr" :key="i" :src="imgItem.url" class="news-image" @error="errorLoadImg(imgItem)" :class="{'three-center-img': i == 1}">
+          <img v-for="(imgItem, i) in item.thumbArr" mode="aspectFill" :key="i" :src="imgItem.url" class="news-image" @error="errorLoadImg(imgItem)" :class="{'three-center-img': i == 1}">
         </div>
         <p class="news-source">
           <span class="source-title">{{item.uperName}}</span>
@@ -20,7 +20,7 @@
             <span>{{item.pubTimeFormat}}</span>
           </p>
         </div>
-        <img :src="item.thumbArr[0].url" v-if="item.thumbArr[0] != null" class="news-image" @error="errorLoadImg(item.thumbArr[0])">
+        <img :src="item.thumbArr[0].url" mode="aspectFill" v-if="item.thumbArr[0] != null" class="news-image" @error="errorLoadImg(item.thumbArr[0])">
       </div>
       <div class="no-img-news news-item border-bottom" v-else>
         <p class="news-title">{{item.title}}</p>
@@ -165,7 +165,6 @@ export default {
     getCreditPage() {
       this.$store.dispatch('GetCreditPage').then(res => {
         if (res.redBagList) {
-          // this.showFloat = true;
           this.showFloatModel = true;
           this.redPackageInfo = res.redBagList;
         } else {
@@ -180,7 +179,9 @@ export default {
   // 定义转发的内容
   onShareAppMessage(res) {
     return {
-      title: '淘新闻'
+      title: '送你一个红包，快拆！',
+      path: '/pages/feed/main',
+      imageUrl: '/static/images/share-me.png'
     };
   },
   // 下拉刷新
