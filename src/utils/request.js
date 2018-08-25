@@ -14,20 +14,25 @@ export default function request(config) {
       method: config.method,
       header,
       success(res) {
-        if (res.statusCode === 200) {
+        if (res.statusCode === 200 && res.data.code === 0) {
           resolve(res);
         } else {
           reject(res);
+          errorTips();
         }
       },
       fail(error) {
         reject(error);
-        wx.showToast({
-          title: '网络异常，请稍后重试',
-          icon: 'none',
-          duration: 2000
-        });
+        errorTips();
       }
     });
+  });
+}
+
+function errorTips() {
+  wx.showToast({
+    title: '网络开小差了，请稍后重试',
+    icon: 'none',
+    duration: 2000
   });
 }

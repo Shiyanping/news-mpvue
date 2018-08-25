@@ -36,7 +36,7 @@ const utils = {
     return format;
   },
   /**
-   * 将时间格式化刚刚，几分钟前形式
+   * 将时间格式化成刚刚，几分钟前形式
    * 用法：utils.timeago(dateTimeStamp)
    * @param {string} dateTimeStamp - 时间戳
    */

@@ -2,7 +2,10 @@
   <div class="border-top">
     <!-- feed 流 -->
     <div v-for="item in newsList" :key="item.id" @click="openArticleDetail(item.id)">
-      <div class="three-img-news news-item border-bottom" v-if="item.thumbMode === 3">
+      <div class="news-item border-bottom" v-if="item.type == 'ad'">
+        <ad unit-id="adunit-aaccf6009d5ca578"></ad>
+      </div>
+      <div class="three-img-news news-item border-bottom" v-else-if="item.thumbMode === 3">
         <p class="news-title">{{item.title}}</p>
         <div class="three-img-list">
           <img v-for="(imgItem, i) in item.thumbArr" mode="aspectFill" :key="i" :src="imgItem.url" class="news-image" @error="errorLoadImg(imgItem)" :class="{'three-center-img': i == 1}">
@@ -40,7 +43,6 @@
 
 <script>
 import FloatMsgModel from './components/FloatMsgModel';
-import { getWxCode } from '@/utils/wxApi';
 import { getNewsList } from '@/api/news';
 import utils from '@/utils/index';
 import defaultImg from '@static/images/default-article-icon.png';
@@ -49,25 +51,21 @@ export default {
   components: {
     FloatMsgModel
   },
-  computed: {
-    userId() {
-      return this.$store.getters.userId == null ? '' : this.$store.getters.userId;
-    }
-  },
+  computed: {},
   data() {
     return {
+      // 判断是刷新列表还是加载更多
+      addNewsType: 'add',
+      // feed流
+      newsList: [],
       // 是否是从其他用户分享的文章详情页进入的
-      showArticle: false,
+      shareArticle: false,
       // 其他用户分享的文章id
       shareArticleId: null,
       // 是否显示浮层
       showFloat: false,
       // 是否显示浮层的弹窗
       showFloatModel: false,
-      // 判断是刷新列表还是加载更多
-      addNewsType: 'add',
-      // feed流
-      newsList: [],
       redPackageInfo: {}
     };
   },
@@ -81,17 +79,8 @@ export default {
   },
   async mounted() {
     console.log('feed');
-    // 注册分享功能
-    wx.showShareMenu({
-      withShareTicket: true
-    });
-    // 获取用户设备信息
-    const systemInfo = wx.getSystemInfoSync();
-    this.$store.commit('SET_SYSTEMINFO', systemInfo);
-    // 获取用户 code
-    const code = await getWxCode();
 
-    this.$store.dispatch('GetRegisterInfo', code).then(() => {
+    this.$store.dispatch('GetRegisterInfo').then(() => {
       // 获取用户积分及红包情况
       this.getCreditPage();
       // 获取用户信息
@@ -100,17 +89,58 @@ export default {
 
     // 获取分享详情页的参数
     const pageQuery = this.$root.$mp.query;
-    this.showArticle = pageQuery.source === 'shareArticle';
+    this.shareArticle = pageQuery.source === 'shareArticle';
     this.shareArticleId = pageQuery.id;
     // 分享的文章从feed流自动跳入详情页
-    if (this.showArticle) {
+    if (this.shareArticle) {
       this.openArticleDetail(this.shareArticleId);
     }
+    // 注册分享功能
+    wx.showShareMenu({
+      withShareTicket: true
+    });
   },
   methods: {
+    // 获取新闻列表
+    getFeedList(type) {
+      getNewsList({
+        times: 1,
+        direction: 1
+      }).then(res => {
+        const data = res.data;
+
+        // 格式化时间
+        data.result = data.result.map(value => {
+          value.pubTimeFormat = utils.timeago(value.pubTime);
+          return value;
+        });
+
+        // 返回的结果每四个分一组，在第二项添加一个空位置，方便添加广告
+        let i = 0;
+        const len = data.result.length;
+        for (i = 0; i < len; i += 4) {
+          data.result.splice(i + 1, 0, {
+            type: 'ad'
+          });
+        }
+
+        if (this.addNewsType === 'add') {
+          this.newsList = [...this.newsList, ...data.result];
+        } else {
+          this.newsList = data.result;
+
+          // 停止下拉
+          wx.stopPullDownRefresh();
+        }
+
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 300);
+      });
+    },
     // 打开详情页
     openArticleDetail(id) {
-      let url = '/pages/newsDetail/main?id=' + id;
+      let url = this.shareArticle ? '/pages/newsDetail/main?shareArticle=true&id=' + id : '/pages/newsDetail/main?id=' + id;
       wx.navigateTo({ url });
     },
     // 领取新手奖励 打开弹窗，关闭浮层
@@ -132,34 +162,6 @@ export default {
       this.showFloat = false;
       this.showFloatModel = false;
       wx.switchTab({ url });
-    },
-    // 获取新闻列表
-    getFeedList(type) {
-      getNewsList({
-        times: 1,
-        userId: this.userId,
-        direction: 1
-      }).then(res => {
-        const data = res.data;
-        if (data.code === 0) {
-          // 格式化时间
-          data.result = data.result.map(value => {
-            value.pubTimeFormat = utils.timeago(value.pubTime);
-            return value;
-          });
-          if (this.addNewsType === 'add') {
-            this.newsList = [...this.newsList, ...data.result];
-          } else {
-            this.newsList = data.result;
-
-            // 停止下拉
-            wx.stopPullDownRefresh();
-          }
-          wx.hideLoading();
-        } else {
-          console.log('网络异常');
-        }
-      });
     },
     // 拉取用户金币现金及是否有红包
     getCreditPage() {

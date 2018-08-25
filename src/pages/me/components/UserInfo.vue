@@ -44,7 +44,7 @@ export default {
       console.log(e);
       if (e.target.userInfo) {
         console.log('授权成功');
-        this.$store.dispatch('UpdateUserInfo', e.target.userInfo);
+        this.$store.dispatch('UpdateUserInfo', e.target);
       } else {
         console.log('授权失败');
       }

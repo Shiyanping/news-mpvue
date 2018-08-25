@@ -1,8 +1,8 @@
+// wx.login 获取 code
 export function getWxCode() {
   return new Promise((resolve, reject) => {
     wx.login({
       success(res) {
-        console.log('成功：' + res);
         if (res.code) {
           resolve(res.code);
         } else {
@@ -10,7 +10,7 @@ export function getWxCode() {
         }
       },
       fail(error) {
-        console.log('失败：' + error);
+        console.log(error);
       }
     });
   });

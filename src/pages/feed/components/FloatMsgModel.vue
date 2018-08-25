@@ -43,11 +43,7 @@ export default {
       redNum: 0
     };
   },
-  computed: {
-    token() {
-      return this.$store.getters.token;
-    }
-  },
+  computed: {},
   methods: {
     // 关闭新手奖励弹窗
     closeRedPackageModel(type) {
@@ -57,32 +53,21 @@ export default {
     onGotUserInfo(e) {
       console.log(e);
       if (e.target.userInfo) {
-        console.log('授权成功');
         this.openRedBag();
-        this.$store.dispatch('UpdateUserInfo', e.target.userInfo);
+        this.$store.dispatch('UpdateUserInfo', e.target);
       } else {
-        console.log('授权失败');
         this.agreeGetUserInfo = false;
       }
     },
     openRedBag() {
       redBagCost({
-        creditKey: this.redPackageInfo.creditKey,
-        token: this.token
+        creditKey: this.redPackageInfo.creditKey
       }).then(res => {
         const data = res.data;
         console.log(data);
-        if (data.code === 0) {
-          this.redNum = data.result / 100;
-          this.$store.commit('ADD_BALANCE', data.result);
-          this.isReceive = true;
-        } else {
-          wx.showToast({
-            title: '网络异常，请稍后重试',
-            icon: 'none',
-            duration: 2000
-          });
-        }
+        this.redNum = data.result / 100;
+        this.$store.commit('ADD_BALANCE', data.result);
+        this.isReceive = true;
       });
     },
     // 跳转签到

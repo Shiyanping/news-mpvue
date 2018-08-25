@@ -1,24 +1,26 @@
 const environment = 'production';
 
+// 淘新闻服务的域名池
 const nePool = {
   development: 'http://test-xwz.coohua.top/',
-  // development: 'https://test-xwz.coohua.top/',
   staging: 'http://172.16.11.190:9140/',
   production: 'https://xwz.chengyudashen.com/'
 };
 
+// 新闻服务的域名池
 const infoPool = {
-  // development: 'https://test-info.coohua.top/',
   development: 'http://test-info.coohua.top/',
   staging: 'http://172.16.11.189:9140/',
   production: 'https://info.chengyudashen.com/'
 };
 
+// 评论服务的域名池
 const commentPool = {
   development: 'http://115.28.185.77:9090/',
   production: 'https://info.coohua.com/'
 };
 
+// 埋点平台的域名池
 const remoteLog = {
   development: 'https://dcs.chengyudashen.com/data/v1?project=newsearn_test',
   staging: 'https://dcs.chengyudashen.com/data/v1?project=newsearn_test',

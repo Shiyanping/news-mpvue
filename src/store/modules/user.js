@@ -1,5 +1,6 @@
 import { getRegisterInfo, getCreditPage, getMiniProgramInfo, updateMiniProgramInfo } from '@/api/user';
 import { getSignStatus, getShareGold } from '@/api/sign';
+import { getWxCode } from '@/utils/wxApi';
 
 const user = {
   state: {
@@ -9,7 +10,7 @@ const user = {
     os: 'android',
     userInfo: {},
     // 是否签到
-    isSign: false,
+    isSign: null,
     // 连续签到了多少天
     signDays: 1,
     // 用户金币
@@ -53,7 +54,14 @@ const user = {
 
   actions: {
     // 将注册的信息进行存储
-    GetRegisterInfo({ commit, state }, code) {
+    async GetRegisterInfo({ commit, state }) {
+      // 获取用户设备信息
+      const systemInfo = wx.getSystemInfoSync();
+      commit('SET_SYSTEMINFO', systemInfo);
+
+      // 获取用户 code
+      const code = await getWxCode();
+
       return new Promise((resolve, reject) => {
         getRegisterInfo({
           code,
@@ -66,24 +74,6 @@ const user = {
             commit('SET_USERID', data.result.userId);
             commit('SET_TOKEN', data.result.token);
             resolve();
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-    // 获取签到状态
-    GetSignInfo({ commit }) {
-      return new Promise((resolve, reject) => {
-        getSignStatus({})
-          .then(res => {
-            const data = res.data;
-            if (data.code === 0) {
-              commit('SET_SIGN', data.result);
-              resolve(data.code);
-            } else {
-              reject(data.result.message);
-            }
           })
           .catch(error => {
             reject(error);
@@ -107,6 +97,38 @@ const user = {
         });
       });
     },
+    // 获取用户头像信息
+    GetUserInfo({ commit }) {
+      return new Promise((resolve, reject) => {
+        getMiniProgramInfo({}).then(res => {
+          const data = res.data;
+          if (data.code === 0) {
+            commit('SET_USERINFO', data.result);
+            resolve();
+          } else {
+            reject(data.result.message);
+          }
+        });
+      });
+    },
+    // 获取签到状态
+    GetSignInfo({ commit }) {
+      return new Promise((resolve, reject) => {
+        getSignStatus({})
+          .then(res => {
+            const data = res.data;
+            if (data.code === 0) {
+              commit('SET_SIGN', data.result);
+              resolve(data.code);
+            } else {
+              reject(data.result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     // 用户分享加金币
     AddShareGold({ commit }) {
       return new Promise((resolve, reject) => {
@@ -122,27 +144,15 @@ const user = {
         });
       });
     },
-    // 获取用户头像信息
-    GetUserInfo({ commit }) {
-      return new Promise((resolve, reject) => {
-        getMiniProgramInfo({}).then(res => {
-          const data = res.data;
-          if (data.code === 0) {
-            commit('SET_USERINFO', data.result);
-            resolve();
-          } else {
-            reject(data.result.message);
-          }
-        });
-      });
-    },
     // 更新用户头像信息
     UpdateUserInfo({ commit }, info) {
-      commit('SET_USERINFO', info);
+      commit('SET_USERINFO', info.userInfo);
       return new Promise((resolve, reject) => {
         updateMiniProgramInfo({
-          nickName: info.nickName,
-          avatarUrl: info.avatarUrl
+          nickName: info.userInfo.nickName,
+          avatarUrl: info.userInfo.avatarUrl,
+          encryptedData: info.encryptedData,
+          iv: info.iv
         }).then(res => {
           const data = res.data;
           if (data.code === 0) {

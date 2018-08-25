@@ -1,14 +1,22 @@
 <template>
   <div class="sign-box">
-    <div class="sign-rule">
+    <div class="sign-rule" v-if="isSign == false">
       <p>签到送金币</p>
       <p class="sign-rule-btn" @click="openSignRule">签到规则</p>
     </div>
-    <p class="sign-btn" @click="startSign" v-if="!isSign">签到</p>
-    <p class="sign-btn active" v-else>明天可领{{nextDayReward}}金币</p>
-    <p class="sign-tips" v-if="!isSign">今天签到可领{{dayReward}}金币</p>
-    <p class="sign-tips" v-else-if="signDays == 1 && isSign">已签到1天</p>
-    <p class="sign-tips" v-else>已连续签到{{signDays}}天</p>
+    <div class="no-sign-box" v-if="isSign == false">
+      <p class="sign-btn" @click="startSign">签到</p>
+      <p class="sign-tips">今天签到可领{{dayReward}}金币</p>
+    </div>
+    <div class="has-sign-box" v-else-if="isSign">
+      <p v-if="signDays == 1">已签到
+        <span class="font-orange"> 1 </span>天</p>
+      <p v-else>已连续签到
+        <span class="font-orange">{{signDays}} </span>天</p>
+      <span></span>
+      <p>明天可领
+        <span class="font-orange">{{nextDayReward}} </span>金币</p>
+    </div>
     <ul class="sign-list">
       <li class="sign-item" v-for="item in rewardList" :key="item.day">
         <div v-if="(signCycleDays == item.day && isSign) || (signCycleDays > item.day)" class="success">已领</div>
@@ -76,9 +84,6 @@ export default {
     signDays() {
       return this.$store.getters.signDays;
     },
-    token() {
-      return this.$store.getters.token;
-    },
     signCycleDays() {
       return this.signDays % 7 === 0 ? 7 : this.signDays % 7;
     },
@@ -92,13 +97,11 @@ export default {
   methods: {
     // 签到
     startSign() {
-      startSign({
-        token: this.token
-      })
+      startSign({})
         .then(res => {
           const data = res.data;
           if (data.code === 0) {
-            this.isSign = true;
+            // this.isSign = true;
             this.$store.commit('SET_SIGN', {
               isSign: true,
               signDays: this.signDays++
@@ -121,7 +124,6 @@ export default {
     handleSignModelShare() {
       this.closeSignModel();
       this.$store.dispatch('AddShareGold');
-      console.log('签到弹窗分享按钮出发：加奖励');
     },
     // 打开签到规则弹窗
     openSignRule() {
@@ -195,6 +197,17 @@ export default {
     letter-spacing 1px
     text-align center
     margin-bottom 23px
+  .has-sign-box
+    display flex
+    justify-content flex-start
+    font-size 16px
+    color #323232
+    margin-bottom 23px
+    > span
+      width 1px
+      height 18px
+      background #C7C7C7
+      margin 0 16px
   .sign-list
     display flex
     justify-content flex-start
