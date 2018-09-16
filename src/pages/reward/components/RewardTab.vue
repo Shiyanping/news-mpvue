@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" scoped type="text/stylus">
 .reward-nav
   box-shadow 0 0 4px 0 rgba(0, 0, 0, 0.1)
   height 45px

@@ -118,6 +118,12 @@ export default {
         }
       };
       this.$store.commit('OPEN_ALERT', alertModelParams);
+      wx.setClipboardData({
+        data: '6666691',
+        success: function (res) {
+          wx.hideToast(); // 关键代码，剪贴成功立马给我隐藏提示
+        }
+      });
     }
   },
   onUnload() {
@@ -145,7 +151,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scope>
+<style lang="stylus" scope type="text/stylus">
 @import '~styles/mixin.styl'
 .margin-bottom
   height 70px

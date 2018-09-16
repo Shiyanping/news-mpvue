@@ -78,7 +78,7 @@ export default {
 };
 </script>
 
-<style scoped lang="stylus">
+<style scoped lang="stylus" type="text/stylus">
 @import '~styles/mixin.styl'
 .model-bg
   model()

@@ -10,7 +10,7 @@
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
 	"appid": "wx0739245838c32e75",
-	"projectname": "newsearn-mp",
+	"projectname": "%E6%B7%98%E7%83%AD%E7%82%B9",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -42,6 +42,12 @@
 					"name": "我的页面",
 					"pathName": "pages/me/main",
 					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "文章详情页面",
+					"pathName": "pages/newsDetail/main",
+					"query": "id=8777945&type=0"
 				}
 			]
 		}

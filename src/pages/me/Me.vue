@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" type="text/stylus">
 @import '~styles/mixin.styl'
 page
   height 100%

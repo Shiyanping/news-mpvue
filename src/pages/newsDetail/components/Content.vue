@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" type="text/stylus">
 .article-content
   padding 24px 16px
   box-sizing border-box

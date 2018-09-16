@@ -22,7 +22,7 @@
                 <span v-text="taskItem.h5Hint"></span>
               </p>
             </div>
-            <button v-if="item.taskType == 'new'" class="task-btn" open-type="contact">{{taskItem.h5ActionText}}</button>
+            <button v-if="item.taskType == 'new'" class="task-btn" open-type="contact" @click="createClipboard">{{taskItem.h5ActionText}}</button>
             <div v-else class="task-btn" v-text="taskItem.h5ActionText" @click.stop="openDownloadTips"></div>
           </div>
           <div class="task-open-detail" v-text="taskItem.desc" v-if="taskItem.isExpand"></div>
@@ -106,12 +106,21 @@ export default {
         btnType: 'contact'
       };
       this.$store.commit('OPEN_ALERT', alertModelParams);
+      this.createClipboard();
+    },
+    createClipboard() {
+      wx.setClipboardData({
+        data: '6666691',
+        success: function (res) {
+          wx.hideToast(); // 关键代码，剪贴成功立马给我隐藏提示
+        }
+      });
     }
   }
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" scoped type="text/stylus">
 @import '~styles/mixin.styl'
 .task-box
   overflow hidden

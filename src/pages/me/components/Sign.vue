@@ -150,7 +150,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" scoped type="text/stylus">
 @import '~styles/mixin.styl'
 .sign-box
   padding 24px 12px

@@ -30,7 +30,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" scoped type="text/stylus">
 @import '~styles/mixin.styl'
 .reward-sum
   padding 16px 16px 12px
