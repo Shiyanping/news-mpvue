@@ -61,12 +61,19 @@
         <img src="/static/images/wechat-icon.png"> 分享给朋友
       </button>
     </div>
+    <!--float广告位-->
+    <div class="fixedAd" v-if="floatAd.show">
+      <image class="closeFixedAd" src="/static/images/fixedClose.png" @click="closeFixed"></image>
+      <navigator target="miniProgram" :app-id="floatAd.appid" version="release" :path="floatAd.path" hover-class='none'>
+        <image :src="floatAd.image" class="flixedAdImage"></image>
+      </navigator>
+    </div>
   </div>
 </template>
 
 <script>
 import newsDetail from './components/Content';
-import { getNewsDetail, getNewsList } from '@/api/news';
+import { getNewsDetail, getNewsList, getFloatAd } from '@/api/news';
 import { getCreditPage } from '@/api/user';
 import utils from '@/utils/index';
 import defaultImg from '@static/images/default-article-icon.png';
@@ -86,7 +93,13 @@ export default {
       hasRedPackage: false,
       addNewsTab: 0,
       addNewsType: 'refresh',
-      newsList: []
+      newsList: [],
+      floatAd: {
+        show: false,
+        appid: '',
+        path: '',
+        image: ''
+      }
     };
   },
   mounted() {
@@ -117,6 +130,9 @@ export default {
 
     // 获取feed流
     this.getFeedList();
+
+    // 获取悬浮广告
+    this.getFloatAd();
   },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
@@ -186,6 +202,18 @@ export default {
     },
     errorLoadImg(item) {
       item.url = defaultImg;
+    },
+    getFloatAd () {
+      getFloatAd().then((res) => {
+        const data = res.data.data;
+        this.floatAd.show = parseInt(data.adRedBagDisplay) === 1;
+        this.floatAd.appid = data.adRedBagAppId;
+        this.floatAd.path = data.adRedBagPath;
+        this.floatAd.image = data.adRedBagImageUrl;
+      });
+    },
+    closeFixed () {
+      this.floatAd.show = false;
     }
   },
   // 上拉触底
@@ -329,4 +357,22 @@ export default {
       transform scale(1)
     100%
       transform scale(0.7)
+.fixedAd
+  position fixed
+  right 30rpx
+  bottom 168rpx
+  width 200rpx
+  height 200rpx
+.closeFixedAd
+  width 30rpx
+  height 30rpx
+  position absolute
+  right -6rpx
+  top -30rpx
+.fixedAd navigator, .flixedAdImage
+  width 100%
+  height 100%
+  padding 0
+  margin 0
+  display block
 </style>

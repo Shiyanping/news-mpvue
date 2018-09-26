@@ -27,16 +27,25 @@ const remoteLog = {
   production: 'https://dcs.chengyudashen.com/data/v1?project=newsearn'
 };
 
+// 健康知识汇的域名池
+const health = {
+  development: 'http://192.168.101.120:82/hkc-api',
+  staging: 'https://test-hkc-api.coohua.top',
+  production: 'https://hkc.chengyudashen.com'
+};
+
 const NE_HOST = nePool[environment];
 const INFO_HOST = infoPool[environment];
 const COMMENT_HOST = commentPool[environment];
 const REMOTE_LOG = remoteLog[environment];
+const HEATH_HOST = health[environment];
 
 const hostConfig = {
   NE_HOST,
   INFO_HOST,
   COMMENT_HOST,
-  REMOTE_LOG
+  REMOTE_LOG,
+  HEATH_HOST
 };
 
 export default hostConfig;

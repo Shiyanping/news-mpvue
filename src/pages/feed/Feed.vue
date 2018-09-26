@@ -3,7 +3,7 @@
     <!--feed流tab-->
     <div class="feed_tab_container">
       <div class="feed_tab">
-        <div class="feed_tab_item" v-for="item in newsTabs" @click="checkFeedTab(item.key)" :class="item.key == addNewsTab && 'feed_tab_active'">
+        <div class="feed_tab_item" v-for="(item, $index) in newsTabs" :key="$index" @click="checkFeedTab(item.key)" :class="item.key == addNewsTab && 'feed_tab_active'">
           <template v-if="item.key == 3">
             <navigator target="miniProgram" open-type="navigate" app-id="wx8e7ab82331241c58" path="pages/index/index?channel=taoredianJiankang" version="release">
               {{item.value}}

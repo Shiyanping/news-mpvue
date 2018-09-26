@@ -18,3 +18,12 @@ export function getNewsDetail(id) {
     data: {}
   });
 }
+
+// 获取悬浮广告信息
+export function getFloatAd() {
+  return request({
+    url: apiHost.HEATH_HOST + '/hkc/config/adRedBagConfig',
+    method: 'GET',
+    data: {miniProgramType: 2}
+  });
+}
